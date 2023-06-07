@@ -1,0 +1,29 @@
+---
+- name: performance
+  hosts: all
+  gather_facts: true
+  become:  true
+  tasks:
+    - name: Task 1
+      command: /bin/sleep 5
+      when: ansible_hostname == 'ansible_client'
+      async: 10
+      poll: 0
+      register: result1
+
+    - name: Task 2
+      command: /bin/sleep 5
+      when: ansible_hostname == 'keolis'
+      async: 10
+      poll: 0
+      register: result2
+
+    - name: Show registered context
+      debug:
+        var: result1
+
+    - name: Show registered context as jinja2
+      debug:
+        msg: "{{ result1 }}"
+
+...
