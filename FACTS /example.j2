@@ -1,0 +1,27 @@
+{{ ansible_managed }}
+
+Host: {{ ansible_hostname }}
+Ip adres is {{ ansible_all_ipv4_addresses }}
+OS : {{ ansible_os_family }}
+Distribution: {{ ansible_distribution }}
+
+playbook variabel : {{ var1 }}
+
+
+
+Total Memory: {{ ansible_memtotal_mb }}
+{% if ansible_memtotal_mb > 10000%}
+Memory is LARGE
+{% else %}
+Memory is SMALL
+{% endif %}
+
+{% for host in groups['all'] %}
+{{ hostvars[host]['ansible_facts']['default_ipv4']['address'] }} {{ hostvars[host]['ansible_facts']['hostname'] }}
+{% endfor %}
+
+
+--== Ansible Jinja2 if variable is defined ( where variable is defined ) ==--
+
+example_variable is defined
+...
