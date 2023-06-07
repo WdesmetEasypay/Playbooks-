@@ -1,0 +1,16 @@
+---
+- name: run tasks on all hosts
+  hosts: keolis
+  user: root
+  tasks:
+  - name: fetch
+    fetch:
+       src: "/home/TEST/CLOCKMGM.so"
+       dest: fetched/
+
+  - name: home
+    file:
+     src: "home/TEST/CLOCKMGM.so"
+     state: touch
+
+...
