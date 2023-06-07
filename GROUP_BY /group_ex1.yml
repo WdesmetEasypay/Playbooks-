@@ -1,0 +1,15 @@
+---
+- name: Group_by
+  hosts: ansible_client
+  tasks:
+    - name: Create group based on ansible_distribution
+      group_by:
+        key: "custom_{{ ansible_distribution | lower }}"
+
+-
+  hosts: control
+  tasks:
+    - name: Ping all in control
+      ping:
+
+...
