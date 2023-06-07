@@ -1,0 +1,26 @@
+---
+- name: assemble files
+  hosts: ansible_client
+  become: true
+  tasks:
+    - name: directory
+      file:
+        path: /etc/ansible/playbooks/ASSEMBLE
+        state: directory
+
+    - name: copy
+      copy:
+        src: "RESULTS/{{ item }}"
+        dest: /etc/ansible/playbooks/ASSEMBLE/RESULTS
+      with_items:
+            - t1
+            - t2
+            - t3
+
+    - name: assemble itself
+      assemble:
+        delimiter: "---"
+        src: /etc/ansible/playbooks/ASSEMBLE/RESULTS
+        dest: /etc/ansible/playbooks/ASSEMBLE/RESULTS/test.txt
+
+...
