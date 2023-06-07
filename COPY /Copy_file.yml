@@ -1,0 +1,12 @@
+---
+- name: Copy files
+  hosts: keolis
+  user: root
+  tasks:
+    - name: Copy files
+      become: true
+      synchronize:
+       src: /data/update.log
+       dest: /home/easypay-asp/updates/
+       mode: push
+...
