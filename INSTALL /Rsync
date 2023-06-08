@@ -1,0 +1,10 @@
+---
+- name: sync module install
+  hosts: ansible_client
+  become: true
+  tasks:
+   - name: rsync install
+     yum:
+       name: rsync
+       state: present
+...
