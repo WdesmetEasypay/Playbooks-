@@ -1,0 +1,16 @@
+---
+- name: playbook
+  hosts: ansible_client
+  remote_user: root
+  become: true
+
+  tasks:
+       -  name: Test
+          file:
+           path: /data/easypay-asp
+           owner: easypay
+           group: easypay
+           mode: 0777
+           state: directory
+           recurse: true
+...
