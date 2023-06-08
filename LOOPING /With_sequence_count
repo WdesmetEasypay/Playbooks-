@@ -1,0 +1,13 @@
+---
+- name: sequence dirs
+  hosts: ansible_client
+  gather_facts: true
+  become: true
+  tasks:
+    - name: sequence dirs count hex
+      file:
+        dest: "{{ item }}"
+        state: directory
+      with_sequence: count=5 format=/home/APPBEH/Wdesmet/count_sequence_%x
+
+...
