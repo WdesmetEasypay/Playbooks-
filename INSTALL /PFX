@@ -1,0 +1,38 @@
+---
+- name: PFX uitpakken
+  hosts: control
+  remote_user: root
+  become: true
+
+  tasks:
+    - name: Aanmaken key.pem
+      command: "/data/openssl/bin/openssl pkcs12 -in PC20230321290701.pfx -nocerts -out key.pem"
+      args:
+         chdir: "/data/easypay-asp/algemeen/apache/bin"
+
+    - name: Aanmaken server.key
+      command: "/data/openssl/bin/openssl rsa -in key.pem -out server.key"
+      args:
+        chdir: "/data/easypay-asp/algemeen/apache/bin"
+
+    - name: Aanmaken server.crt
+      command: "/data/openssl/bin/openssl pkcs12 -in PC20230321290701.pfx -clcerts -nokeys -out server.crt"
+      args:
+          chdir: "/data/easypay-asp/algemeen/apache/bin"
+
+    - name: Aanmaken intermediate.crt
+      command: "/data/openssl/bin/openssl pkcs12 -in PC20230321290701.pfx -cacerts -out intermediate.crt"
+      args:
+          chdir: "/data/easypay-asp/algemeen/apache/bin"
+
+
+
+    - name: Set Permissions
+      file:
+           path: /data/easypay-asp/algemeen/apache/bin
+           owner: easypay
+           group: easypay
+           mode: 0777
+           state: directory
+           recurse: true
+...
