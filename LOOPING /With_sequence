@@ -1,0 +1,13 @@
+---
+- name: sequence dirs
+  hosts: ansible_client
+  gather_facts: true
+  become: true
+  tasks:
+    - name: sequence dirs
+      file:
+        dest: "/home/APPBEH/Wdesmet/sequence_{{ item }}"
+        state: directory
+      with_sequence: start=0 end=20 stride=5
+
+...
