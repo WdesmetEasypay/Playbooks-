@@ -1,0 +1,10 @@
+---
+- name: Registering When
+  hosts: all
+  become: true
+  tasks:
+   - name: Exploring hostnames
+     command: hostname -s
+     when: ansible_distribution == "OracleLinux" and ansible_distribution_major_version == "8"
+
+...
