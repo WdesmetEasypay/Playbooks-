@@ -1,0 +1,12 @@
+---
+- name: nginx restart
+  hosts: ansible_client
+  remote_user: root
+  become: true
+  tasks:
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
+
+...
