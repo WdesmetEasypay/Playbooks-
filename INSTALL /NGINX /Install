@@ -1,0 +1,13 @@
+---
+- name: nginx
+  hosts: ansible_client
+  tasks:
+    - name: Install Nginx
+      yum:
+        name: nginx
+        update_cache: yes
+        state: latest
+      when: ansible_distribution == 'OracleLinux'
+
+...
+
