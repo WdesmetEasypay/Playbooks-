@@ -1,0 +1,18 @@
+---
+- name: nginx restart with handlers
+  hosts: ansible_client
+  remote_user: root
+  become: true
+  tasks:
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
+  handlers:
+    - name: Check HTTP Service
+      uri:
+        url: http://{{ ansible_default_ipv4.address }}
+        url: https://www.google.be
+        status_code: 200
+
+...
