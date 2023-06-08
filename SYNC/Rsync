@@ -1,0 +1,11 @@
+---
+- name: rsync
+  hosts: keolis
+  become: true
+  tasks:
+    - name: rsync
+      synchronize:
+        src: /home/APPBEH/Wdesmet/CLOCKMGM.so
+        dest: /home/TEST/CLOCKMGM.so
+        mode: push
+...
