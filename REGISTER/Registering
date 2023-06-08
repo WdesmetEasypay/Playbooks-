@@ -1,0 +1,13 @@
+---
+- name: Registering an action
+  hosts: ansible_client
+  become: true
+  tasks:
+    - name: Exploring hostnames
+      command: hostname -s
+      register: hostname_output
+
+    - name: output
+      debug:
+        var: hostname_output
+...
