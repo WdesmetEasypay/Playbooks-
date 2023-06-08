@@ -1,0 +1,14 @@
+---
+- name: Looping with items
+  hosts: ansible_client
+  become: true
+  tasks:
+   - name: Creating user
+     user:
+       name: "{{ item.key }}"
+       comment: " {{ item.value.full_name }}"
+     with_dict:
+       Wim:
+         full_name: Wim Desmet
+
+...
