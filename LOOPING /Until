@@ -1,0 +1,16 @@
+---
+- name: until
+  hosts: ansible_client
+  gather_facts: true
+  become: true
+  tasks:
+    - name: ./random.sh script uitvoeren
+      script: random.sh
+      register: result
+      retries: 100
+      until: result.stdout.find("10") != -1
+      delay: 1
+
+
+...
+
