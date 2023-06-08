@@ -1,0 +1,12 @@
+---
+- name: nginx package
+  hosts: ansible_client
+  remote_user: root
+  become: true
+  tasks:
+    - name: Install Nginx
+      package:
+        name: nginx
+        state: latest
+
+...
