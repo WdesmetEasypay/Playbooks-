@@ -1,0 +1,16 @@
+---
+- name: Looping with items
+  hosts: ansible_client
+  vars:
+    my_list:
+      - { dir: "dir1", file: "fileA"}
+      - { dir: "dir2", file: "fileB"}
+  tasks:
+  - name: Creating dirs
+    file:
+      path: /etc/ansible/playbooks/LOOPING/{{ item.dir }}/{{ item.file }}
+      state: touch
+  with_items:
+   - "{{ my_list }}"
+
+...
