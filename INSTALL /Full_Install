@@ -85,11 +85,15 @@
 
 ##### FIREWALL ######################################################
 
-    - name: Add firewall rules
+    - name: Print message
+      ansible.builtin.debug:
+        msg: "{{ Set_Portnumber }}"
+
+    - name: input
       firewalld:
-        port: 443/tcp
-        permanent: true
-        state: enabled
+           port: "{{ Set_Portnumber }}"
+           permanent: true
+           state: enabled
 
     - name: Reload Firewall rules
       systemd:
