@@ -1,0 +1,29 @@
+---
+ - name: Folderstructuur
+   hosts: ansible_client
+   become: true
+   gather_facts: true
+   vars_prompt:
+
+     - name: Locatie_shell
+       prompt: Wat is de locatie van het script?
+       private: no
+
+###### vb: /data/test
+
+     - name: Remove_script
+       prompt: Naam van het script die gewist moet worden
+       private: no
+
+###### vb: /data/test/make_easypay-asp.sh
+
+   tasks:
+     - name: Uitpakken folderstructuur
+       command: "sh make_easypay-asp.sh"
+       args:
+          chdir: "{{ Locatie_shell }}"
+
+     - name: Remove script
+       file:
+         path: "{{ Remove_script }}"
+         state: absent
