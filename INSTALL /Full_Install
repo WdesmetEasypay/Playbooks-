@@ -72,15 +72,16 @@
 
 ##### AANMAAK FOLDERSTRUCTUUR ########################################
 
-    - name: Folder structuur
+
+    - name: Uitpakken folderstructuur
       command: "sh make_easypay-asp.sh"
       args:
-          chdir: "/data"
+          chdir: "{{ Locatie_shell }}"
 
-    - name: remove script
-      file:
-        path: /data/make_easypay-asp.sh
-        state: absent
+    - name: Remove script
+       file:
+         path: "{{ Remove_script }}"
+         state: absent
 
 ##### FIREWALL ######################################################
 
