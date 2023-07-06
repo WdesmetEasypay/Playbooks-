@@ -1,0 +1,181 @@
+---
+- name: Full Install
+  hosts: ansible_client
+  become: true
+  gather_facts: true
+  vars_prompt:
+
+    - name: useradd
+      prompt: useradd
+      private: no
+
+    - name: groupadd
+      prompt: groupadd
+      private: no
+
+    - name: password
+      prompt: password
+      private: no
+
+    - name: openssl_config_path
+      prompt: openssl_config_path
+      private: no
+
+    - name: apache_config_path
+      prompt: apache_config_path
+      private: no
+
+  tasks:
+
+##### AANMAAK USER EN GROUP ######################################
+
+    - name: Print message
+      ansible.builtin.user:
+       name: "{{ useradd }}"
+       state: present
+       password: "{{ password | password_hash('sha512') }}"
+
+    - name: Print message
+      ansible.builtin.group:
+       name: "{{ groupadd }}"
+       state: present
+
+##### AANMAAK FOLDERSTRUCTUUR ########################################
+
+    - name: Folder structuur
+      command: "sh make_easypay-asp.sh"
+      args:
+          chdir: "/data"
+
+    - name: remove script
+      file:
+        path: /data/make_easypay-asp.sh
+        state: absent
+
+##### FIREWALL ######################################################
+
+    - name: Add firewall rules
+      firewalld:
+        port: 443/tcp
+        permanent: true
+        state: enabled
+
+    - name: Reload Firewall rules
+      systemd:
+        name: firewalld
+        state: reloaded
+
+##### OPENSSL ######################################################
+
+    - name: untar openssl
+      unarchive:
+        src: /data/openssl-1.1.1l.tar.gz
+        dest: /data/
+
+    - name: remove tar
+      file:
+        path: /data/openssl-1.1.1l.tar.gz
+        state: absent
+
+    - name: Print message
+      ansible.builtin.debug:
+        msg: "{{ openssl_config_path }}"
+
+    - name: input
+      command: "{{ openssl_config_path }}"
+      args:
+            chdir: "/data/openssl-1.1.1l"
+
+###./config --prefix=/data/openssl -fPIC###
+
+    - name: make install
+      command: "make install"
+      args:
+            chdir: "/data/openssl-1.1.1l"
+
+    - name: remove install dir openssl
+      file:
+        path: /data/openssl-1.1.1l
+        state: absent
+
+
+##### APACHE ########################################################
+
+    - name: apache untar
+      unarchive:
+       src: /data/httpd-2.4.51-easypay.tar.gz
+       dest: /data/easypay-asp/algemeen/
+
+    - name: remove tar
+      file:
+       path: /data/httpd-2.4.51-easypay.tar.gz
+       state: absent
+
+
+    - name: Print message
+      ansible.builtin.debug:
+        msg: "{{ apache_config_path }}"
+
+    - name: input
+      command: "{{ apache_config_path }}"
+      args:
+            chdir: "/data/easypay-asp/algemeen/httpd-2.4.51"
+
+####apache_config_path##./configure --prefix=/data/easypay-asp/algemeen/apache --enable-ssl --with-ssl=/data/openssl"####
+
+
+    - name: make install
+      command: "make install"
+      args:
+            chdir: "/data/easypay-asp/algemeen/httpd-2.4.51"
+
+    - name: remove install dir
+      file:
+        path: /data/easypay-asp/algemeen/httpd-2.4.51
+        state: absent
+
+##### JAVA #############################################################
+
+    - name: Install JDK 7
+      unarchive:
+        src: /data/jdk_64bit.tar.gz
+        dest: /data/easypay-asp/algemeen/java
+
+    - name: Remove Tar
+      file:
+       path: /data/jdk_64bit.tar.gz
+       state: absent
+
+    - name: Install JDK 11
+      unarchive:
+        src: /data/jdk11_linux_x64.tar.gz
+        dest: /data/easypay-asp/algemeen/java
+
+    - name: Remove Tar
+      file:
+       path: /data/jdk11_linux_x64.tar.gz
+       state: absent
+
+##### FOP en JASPER ####################################################
+
+    - name: Install Fop en Jasper
+      unarchive:
+         src: /data/linux_foppdf_v4.tar.gz
+         dest: /data/easypay-asp
+
+    - name: Remove Tar
+      file:
+        path: /data/linux_foppdf_v4.tar.gz
+        state: absent
+
+##### RECHTEN ##########################################################
+
+    - name: rechten zetten
+      file:
+       path: /data/easypay-asp/
+       owner: easypay
+       group: easypay
+       mode: 0777
+       state: directory
+       recurse: true
+
