@@ -1,0 +1,43 @@
+---
+- name: Cobol script
+  hosts: ansible_client
+  become: true
+  gather_facts: true
+  vars_prompt:
+
+  - name: Vraag_1
+    prompt: Where would you like to copy the installation files?
+    private: no
+
+  - name: Vraag_2
+    prompt: Where would you like to install the product?
+    private: no
+
+
+  - name: Vraag_3
+    prompt: Enter the name and location of the license file
+    private: no
+
+
+  tasks:
+
+   - name: Print message
+     ansible.builtin.debug:
+       msg: "{{ Vraag_1 }}"
+
+   - name: Install
+     ansible.builtin.expect:
+      command: "/data/easypay-asp/algemeen/runtime/install.sh"
+      responses:
+       "/usr/easypay/easypay-asp/algemeen/rmcobol/install": "{{ Vraag_1 }}"
+       "Copy directory exists and will be emptied.  OK?": y
+#       "Do you want to create it?": y
+       "/usr/easypay/easypay-asp/algemeen/rmcobol": "{{ Vraag_2 }}"
+       "/tmp/liant.lic": "{{ Vraag_3 }}"
+       "Do you accept this license?": y
+       "terminfo": ""
+       "Do you want to install the Automatic Configuration File module?": n
+       "Do you want to install the XML Extensions support module?": y
+       "Do you want to install the FlexGen support module?": n
+     args:
+      chdir: /data/easypay-asp/algemeen/runtime
