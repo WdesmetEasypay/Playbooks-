@@ -117,40 +117,40 @@
         state: reloaded
 
 ##### OPENSSL ######################################################
+ - name: Print message
+      ansible.builtin.debug:
+        msg: "{{ Specify_tar_location }}"
 
     - name: untar openssl
       unarchive:
-        src: /data/openssl-1.1.1l.tar.gz
-        dest: /data/
+        src: "{{ Specify_tar_location }}"
+        dest: "{{ untar_path }}"
 
     - name: remove tar
       file:
-        path: /data/openssl-1.1.1l.tar.gz
+        path: "{{ Specify_tar_location }}"
         state: absent
 
     - name: Print message
       ansible.builtin.debug:
-        msg: "{{ openssl_config_path }}"
+        msg: "{{ openssl_path }}"
 
     - name: input
-      command: "{{ openssl_config_path }}"
+      command: "{{ openssl_path }}"
       args:
-            chdir: "/data/openssl-1.1.1l"
-
-###./config --prefix=/data/openssl -fPIC###
+            chdir: "{{ openssl_install_folder }}"
 
     - name: make install
       command: "make install"
       args:
-            chdir: "/data/openssl-1.1.1l"
+            chdir: "{{ openssl_install_folder }}"
 
     - name: remove install dir openssl
       file:
-        path: /data/openssl-1.1.1l
+        path: "{{ openssl_install_folder }}"
         state: absent
 
-
-##### APACHE ########################################################
+  ##### APACHE ########################################################
 
     - name: apache untar
       unarchive:
