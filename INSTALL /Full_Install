@@ -25,6 +25,24 @@
       prompt: apache_config_path
       private: no
 
+    - name: Specify_tar_location_of_JDK7
+      prompt: Please set the JDK7 tar path
+      private: no
+
+    - name: Set_JDK7_Path
+      prompt: Please specify the JDK7 path
+      private: no
+
+    - name: Specify_tar_location_of_JDK11
+      prompt: Please set the JDK11 tar path
+      private: no
+
+    - name: Set_JDK11_Path
+      prompt: Please specify the JDK11 path
+      private: no
+
+    
+
   tasks:
 
 ##### AANMAAK USER EN GROUP ######################################
@@ -135,11 +153,26 @@
         state: absent
 
 ##### JAVA #############################################################
+     - name: Print message
+      ansible.builtin.debug:
+        msg: "{{ Specify_tar_location_of_JDK7 }}"
+
+    - name: Print message
+      ansible.builtin.debug:
+        msg: "{{ Set_JDK7_Path }}"
+
+    - name: Print message
+      ansible.builtin.debug:
+        msg: "{{ Specify_tar_location_of_JDK11 }}"
+
+    - name: Print message
+      ansible.builtin.debug:
+        msg: "{{ Set_JDK11_Path }}"
 
     - name: Install JDK 7
       unarchive:
-        src: /data/jdk_64bit.tar.gz
-        dest: /data/easypay-asp/algemeen/java
+        src: "{{ Specify_tar_location_of_JDK7 }}"
+        dest: "{{ Set_JDK7_Path }}"
 
     - name: Remove Tar
       file:
@@ -148,8 +181,8 @@
 
     - name: Install JDK 11
       unarchive:
-        src: /data/jdk11_linux_x64.tar.gz
-        dest: /data/easypay-asp/algemeen/java
+        src: "{{ Specify_tar_location_of_JDK11 }}"
+        dest: "{{ Set_JDK11_Path }}"
 
     - name: Remove Tar
       file:
