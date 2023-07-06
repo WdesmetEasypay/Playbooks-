@@ -24,6 +24,10 @@
     - name: apache_config_path
       prompt: apache_config_path
       private: no
+    
+    - name: Set_Portnumber
+      prompt: Set Portnumber
+      private: no
 
     - name: Specify_tar_location_of_JDK7
       prompt: Please set the JDK7 tar path
