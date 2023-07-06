@@ -1,21 +1,42 @@
----
 - name: openssl
   hosts: ansible_client
   become: true
   vars_prompt:
+
+    - name: Specify_tar_location
+      prompt: Please set the full tar path
+      private: no
+
+    - name: untar_path
+      prompt: Specify the OpenSSL untar path
+      private: no
+
+    - name: openssl_install_folder
+      prompt: Specify the OpenSSL install folder (/../openssl-1.1.1l)
+      private: no
+
     - name: openssl_path
-      prompt: openssl_path
+      prompt: Please specify the OpenSSL config path
+      private: no
+
+    - name: Remove_tar
+      prompt: Full path van de tar om te wissen
       private: no
 
   tasks:
+
+    - name: Print message
+      ansible.builtin.debug:
+        msg: "{{ Specify_tar_location }}"
+
     - name: untar openssl
       unarchive:
-        src: /data/openssl-1.1.1l.tar.gz
-        dest: /data/
+        src: "{{ Specify_tar_location }}"
+        dest: "{{ untar_path }}"
 
     - name: remove tar
       file:
-        path: /data/openssl-1.1.1l.tar.gz
+        path: "{{ Specify_tar_location }}"
         state: absent
 
     - name: Print message
@@ -25,14 +46,14 @@
     - name: input
       command: "{{ openssl_path }}"
       args:
-            chdir: "/data/openssl-1.1.1l"
+            chdir: "{{ openssl_install_folder }}"
 
     - name: make install
       command: "make install"
       args:
-            chdir: "/data/openssl-1.1.1l"
+            chdir: "{{ openssl_install_folder }}"
 
     - name: remove install dir openssl
       file:
-        path: /data/openssl-1.1.1l
+        path: "{{ openssl_install_folder }}"
         state: absent
