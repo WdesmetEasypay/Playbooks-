@@ -1,8 +1,11 @@
 ---
-- name: apache
+- name: openssl
   hosts: ansible_client
-  remote_user: root
   become: true
+  vars_prompt:
+    - name: openssl_path
+      prompt: openssl_path
+      private: no
 
   tasks:
     - name: untar openssl
@@ -15,8 +18,12 @@
         path: /data/openssl-1.1.1l.tar.gz
         state: absent
 
-    - name: openssl config
-      command: "./config --prefix=/data/openssl -fPIC"
+    - name: Print message
+      ansible.builtin.debug:
+        msg: "{{ openssl_path }}"
+
+    - name: input
+      command: "{{ openssl_path }}"
       args:
             chdir: "/data/openssl-1.1.1l"
 
@@ -29,4 +36,3 @@
       file:
         path: /data/openssl-1.1.1l
         state: absent
-...
