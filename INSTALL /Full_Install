@@ -25,8 +25,24 @@
       prompt: Fullpath van het script die gewist moet worden
       private: no
 
-    - name: openssl_config_path
-      prompt: openssl_config_path
+    - name: Specify_tar_location
+      prompt: Please set the full OpenSSL tar path
+      private: no
+
+    - name: untar_path
+      prompt: Specify the OpenSSL untar path
+      private: no
+
+    - name: openssl_install_folder
+      prompt: Specify the OpenSSL install folder (/../openssl-1.1.1l)
+      private: no
+
+    - name: openssl_path
+      prompt: Please specify the OpenSSL config path
+      private: no
+
+    - name: Remove_tar
+      prompt: Full OpenSSL path van de tar om te wissen
       private: no
 
     - name: apache_config_path
