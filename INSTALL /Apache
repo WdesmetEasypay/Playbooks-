@@ -3,6 +3,10 @@
   hosts: ansible_client
   remote_user: root
   become: true
+  vars_prompt:
+  - name: apache_config_path
+    prompt: apache_config_path
+    private: no
 
   tasks:
     - name: apache untar
@@ -15,10 +19,16 @@
        path: /data/easypay-asp/algemeen/httpd-2.4.51-easypay.tar.gz
        state: absent
 
-    - name: configure apache
-      command: "./configure --prefix=/data/easypay-asp/algemeen/apache --enable-ssl --with-ssl=/data/openssl"
+    - name: Print message
+      ansible.builtin.debug:
+        msg: "{{ apache_config_path }}"
+
+    - name: input
+      command: "{{ apache_config_path }}"
       args:
             chdir: "/data/easypay-asp/algemeen/httpd-2.4.51"
+
+####apache_config_path##./configure --prefix=/data/easypay-asp/algemeen/apache --enable-ssl --with-ssl=/data/openssl"####
 
     - name: make install
       command: "make install"
