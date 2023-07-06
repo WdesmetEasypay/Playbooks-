@@ -17,6 +17,14 @@
       prompt: password
       private: no
 
+    - name: Locatie_shell
+      prompt: Wat is de locatie van het script zonder scriptnaam?
+      private: no
+
+    - name: Remove_script
+      prompt: Fullpath van het script die gewist moet worden
+      private: no
+
     - name: openssl_config_path
       prompt: openssl_config_path
       private: no
