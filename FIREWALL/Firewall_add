@@ -1,18 +1,28 @@
 ---
-- name: firewall
-  hosts: ansible_client
-  remote_user: root
-  become: true
+ - name: Set Firewall Rules
+   hosts: ansible_client
+   become: true
+   gather_facts: true
+   vars_prompt:
 
-  tasks:
-    - name: Add firewall rules
+    - name: Set_Portnumber
+      prompt: Set Portnumber
+      private: no
+
+   tasks:
+
+    - name: Print message
+      ansible.builtin.debug:
+        msg: "{{ Set_Portnumber }}"
+
+    - name: input
       firewalld:
-          port: 443/tcp
-          permanent: true
-          state: enabled
+           port: "{{ Set_Portnumber }}"
+           permanent: true
+           state: enabled
 
     - name: Reload Firewall rules
       systemd:
-           name: firewalld
-           state: reloaded
+        name: firewalld
+        state: reloaded
 ...
