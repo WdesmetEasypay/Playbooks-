@@ -1,1 +1,26 @@
+---
+- name: Check Cron Errors
+  hosts: ansible_client
+  tasks:
+    - name: Ensure cron log file exists
+      stat:
+        path: /var/log/cron
+      register: cron_log_file
+
+    - name: Print cron log content
+      debug:
+        var: cron_log_file
+
+    - name: Check for errors in cron log
+      shell: /bin/grep -i "error" /var/log/cron || true
+      register: cron_errors
+      ignore_errors: yes
+      changed_when: false
+      become: yes
+
+    - name: Display cron errors
+      debug:
+        var: cron_errors.stdout_lines
+      when: cron_errors.rc == 2
+
 
