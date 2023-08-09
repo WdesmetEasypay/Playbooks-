@@ -12,7 +12,7 @@
         var: cron_log_file
 
     - name: Check for errors in cron log
-      shell: /bin/grep -i "error" /var/log/cron || true
+      shell: /bin/grep -iE "error|failed|not permitted" /var/log/cron > /etc/ansible/playbooks/ERROR/log.txt || true
       register: cron_errors
       ignore_errors: yes
       changed_when: false
