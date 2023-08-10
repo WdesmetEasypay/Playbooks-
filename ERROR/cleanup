@@ -1,0 +1,40 @@
+---
+- name: Cleanup environments
+  hosts: ansible_client
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Cleanup .old files
+      shell: find /data/easypay-asp -name "*.old"
+      register: files_to_delete_old
+      changed_when: false
+
+    - name: Cleanup .tar.gz files
+      shell: find /data/easypay-asp -name "*.tar.gz"
+      register: files_to_delete_tar_gz
+      changed_when: false
+
+    - name: Toon gevonden bestanden - .old
+      debug:
+        var: files_to_delete_old.stdout_lines
+
+    - name: Toon gevonden bestanden - .tar.gz
+      debug:
+        var: files_to_delete_tar_gz.stdout_lines
+
+    - name: Verwijder .old bestanden
+      shell: "rm -f {{ item }}"
+      loop: "{{ files_to_delete_old.stdout_lines | default([]) }}"
+      when: files_to_delete_old.stdout_lines is defined
+
+    - name: Verwijder .tar.gz bestanden
+      shell: "rm -f {{ item }}"
+      loop: "{{ files_to_delete_tar_gz.stdout_lines | default([]) }}"
+      when: files_to_delete_tar_gz.stdout_lines is defined
+
+    - name: Display directory contents
+      command: "ls -l /data/easypay-asp"
+      register: dir_contents
+
+    - debug:
+        var: dir_contents.stdout_lines
