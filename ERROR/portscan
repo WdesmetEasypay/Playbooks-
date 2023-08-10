@@ -1,0 +1,21 @@
+---
+- name: Gather Apache Port Information
+  hosts: ansible_client
+  gather_facts: true
+  become: true
+
+  tasks:
+    - name: Get Apache Ports from httpd.conf
+      ansible.builtin.shell: "grep -E '^Listen ' /etc/httpd/conf/httpd.conf | awk '{print $2}'"
+      register: apache_ports
+      changed_when: false
+
+    - name: Display Port Information
+      ansible.builtin.debug:
+        msg: "Environment: {{ ansible_hostname }} | Apache Process and Port: {{ apache_ports.stdout_lines | join(', ') }}"
+
+    - name: Write Port Information to Log File
+      ansible.builtin.copy:
+        content: "Environment: {{ ansible_hostname }} | Apache Process and Port: {{ apache_ports.stdout_lines | join(', ') }}"
+        dest: "/etc/ansible/playbooks/ERROR/port_info.log"
+      when: apache_ports.stdout_lines | length > 0
