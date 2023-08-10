@@ -1,0 +1,13 @@
+---
+- name: Find Large Log Files
+  hosts: ansible_client
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Find log files above 500mb
+      shell: find /data/easypay-asp -type f -name "*.log" -size +500M
+      register: found_files
+
+    - name: Display found log files
+      debug:
+        var: found_files.stdout_lines
