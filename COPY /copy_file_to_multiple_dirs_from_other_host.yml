@@ -2,6 +2,9 @@
 - name: Copy a file from a remote host to multiple directories
   hosts: ansible_client
 
+#### Please ensure you have a files.txt (the file that needs to be copied in this example) file and a destination_directories.txt (with target directories specified in it) in this example ###
+#### The files directory will be copied too !! If you don't want to have this, please see copy_file_to_multiple_dirs_from_other_host.yml ####
+
   tasks:
     - name: Copy the file from the source server to Ansible control node
       command: scp easypay.keolis.be:/home/TEST/CLOCKMGM.so /tmp/CLOCKMGM.so
