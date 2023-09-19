@@ -1,0 +1,23 @@
+---
+- name: Copy files from a remote machine to multiple directories on another remote machine
+  hosts: ansible_client
+
+  tasks:
+    - name: Fetch files from the source server to the control machine
+      ansible.builtin.fetch:
+        src: /home/TEST/CLOCKMGM.so  # Adjust this to the correct remote path or pattern
+        dest: /tmp/
+      delegate_to: easypay.keolis.be
+
+    - name: Read destination directories from a file on the target server
+      shell: cat /data/destination_directories.txt
+      register: destination_directories_file
+      changed_when: false
+      ignore_errors: yes
+
+    - name: Copy the downloaded files to multiple directories on the target server
+      ansible.builtin.copy:
+        src: "/tmp/CLOCKMGM.so"
+        dest: "{{ item }}/CLOCKMGM.so"
+      with_items: "{{ destination_directories_file.stdout_lines }}"
+      when: destination_directories_file.stdout is defined
