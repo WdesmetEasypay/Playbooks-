@@ -1,0 +1,22 @@
+---
+- name: Copy a file to multiple directories
+  hosts: ansible_client
+
+  tasks:
+    - name: Read destination directories from a file
+      shell: cat /data/destination_directories.txt
+      register: destination_directories_file
+      changed_when: false
+      ignore_errors: yes
+
+    - name: Debug destination directories file content
+      debug:
+        var: destination_directories_file.stdout
+      when: destination_directories_file.stdout is defined
+
+    - name: Copy the file to multiple directories
+      ansible.builtin.copy:
+        src: /data/test/file.txt
+        dest: "{{ item | regex_replace('\n', '') }}"
+      with_items: "{{ destination_directories_file.stdout_lines }}"
+      when: destination_directories_file.stdout is defined
