@@ -1,5 +1,5 @@
 ---
-- name: Copy a file and its directory to multiple directories
+- name: Copy a file and its directory to multiple directories on the same server
   hosts: ansible_client
 
   tasks:
