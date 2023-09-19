@@ -1,0 +1,35 @@
+---
+- name: Copy a file from a remote host to multiple directories
+  hosts: ansible_client
+
+  tasks:
+    - name: Copy the file from the source server to Ansible control node
+      command: scp easypay.keolis.be:/home/TEST/CLOCKMGM.so /tmp/CLOCKMGM.so
+      delegate_to: localhost
+
+### Will ask password from root Keolis ###
+
+    - name: Read destination directories from a file
+      shell: cat /data/destination_directories.txt
+      register: destination_directories_file
+      changed_when: false
+      ignore_errors: yes
+
+    - name: Debug destination directories file content
+      debug:
+        var: destination_directories_file.stdout
+      when: destination_directories_file.stdout is defined  # Only print if the variable is defined
+
+    - name: Copy the downloaded file to multiple directories on the target server
+      ansible.builtin.copy:
+        src: "/tmp/CLOCKMGM.so"  # Specify the source file
+        dest: "{{ item }}/CLOCKMGM.so"  # Specify the destination file path
+      with_items: "{{ destination_directories_file.stdout_lines }}"
+      when: destination_directories_file.stdout is defined  # Only execute if the variable is defined
+
+### Remove files from /tmp/ directory ###
+
+    - name: Remove the file from the control node
+      ansible.builtin.file:
+        path: "/tmp/CLOCKMGM.so"
+        state: absent
