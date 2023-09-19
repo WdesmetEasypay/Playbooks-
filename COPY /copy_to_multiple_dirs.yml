@@ -20,3 +20,5 @@
         dest: "{{ item | regex_replace('\n', '') }}"
       with_items: "{{ destination_directories_file.stdout_lines }}"
       when: destination_directories_file.stdout is defined
+      
+#### The files directory will be copied too !! ####
