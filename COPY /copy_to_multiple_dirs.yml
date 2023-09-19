@@ -21,4 +21,4 @@
       with_items: "{{ destination_directories_file.stdout_lines }}"
       when: destination_directories_file.stdout is defined
       
-#### The files directory will be copied too !! ####
+#### The files directory will be copied too !! If you don't want to have this, please see copy_file_to_multiple_dirs_from_other_host.yml ####
