@@ -21,4 +21,5 @@
       with_items: "{{ destination_directories_file.stdout_lines }}"
       when: destination_directories_file.stdout is defined
       
+#### Please ensure you have a files.txt (the file that needs to be copied in this example) file and a destination_directories.txt (with target directories specified in it) in this example ###
 #### The files directory will be copied too !! If you don't want to have this, please see copy_file_to_multiple_dirs_from_other_host.yml ####
