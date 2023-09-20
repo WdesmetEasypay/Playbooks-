@@ -34,3 +34,24 @@
 #### - source: /tmp/CLOCKMGM.so
 ####   destination: /data/1/CLOCKMGM.so
 ############################################################################################################################################################################################################################
+#### It should work with a CSV format too. Prepare your Excel or CSV file: Create a spreadsheet or CSV file with two columns, one for the source path and another for the destination path. 
+#### Each row should represent a file mapping. 
+#### Update your Ansible playbook: Modify your Ansible playbook to read the Excel or CSV file using the appropriate Ansible modules. You can use modules like csvfile 
+#### (for CSV) or xlrd (for Excel) to read the file and load the data into Ansible variables.
+#### Example Ansible playbook to read a CSV file:
+#### ---
+#### - name: Copy Files to Remote Hosts
+####  hosts: ansible_client
+####  become: yes
+####  tasks:
+####    - name: Read file mappings from CSV
+####      csvfile:
+####        path: /path/to/your/mappings.csv
+####      register: csv_data
+####
+####    - name: Debug CSV data
+####      debug:
+####        var: csv_data
+####
+####     Continue with your tasks
+#############################################################################################################################################################################################################################
