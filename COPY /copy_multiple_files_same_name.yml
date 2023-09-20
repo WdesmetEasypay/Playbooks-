@@ -1,5 +1,5 @@
 ---
-- name: Copy multiple Files with the same name to Remote Hosts in different directories.
+- name: Copy multiple Files with the same from the same Host in different directories.
   hosts: ansible_client
   become: yes
   tasks:
