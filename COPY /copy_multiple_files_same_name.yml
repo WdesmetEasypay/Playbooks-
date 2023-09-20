@@ -27,7 +27,7 @@
 ###########################################################################################################################################################################################################################
 #### Create a txt file called for example "file_mappings.txt" 
 #### NOTE !! Create it in yml, then convert into a txt, when you get errors, it is most likely that your txt file is not in the correct format####
-#### LEAVE NO SPACES in the text or it will give errors. 
+#### LEAVE NO SPACES in the text or it will give errors. Type manually to avoid errors.
 #### The inside format of the txt should be like this ####
 #### - source: /home/TEST/CLOCKMGM.so
 ####   destination: /data/bad/CLOCKMGM.so
