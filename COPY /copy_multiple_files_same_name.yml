@@ -36,6 +36,11 @@
 ############################################################################################################################################################################################################################
 #### It should work with a CSV format too. Prepare your Excel or CSV file: Create a spreadsheet or CSV file with two columns, one for the source path and another for the destination path. 
 #### Each row should represent a file mapping. 
+#### -----------------------------------------------
+#### | SOURCE               |  DESTINATION         |
+#### -----------------------------------------------
+#### | source/path/         |  destination/path    |
+#### -----------------------------------------------
 #### Update your Ansible playbook: Modify your Ansible playbook to read the Excel or CSV file using the appropriate Ansible modules. You can use modules like csvfile 
 #### (for CSV) or xlrd (for Excel) to read the file and load the data into Ansible variables.
 #### Example Ansible playbook to read a CSV file:
