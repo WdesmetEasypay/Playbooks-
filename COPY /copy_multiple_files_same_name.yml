@@ -60,3 +60,11 @@
 ####
 ####     Continue with your tasks
 #############################################################################################################################################################################################################################
+#### Read file mappings: This task uses the slurp module to read a file from a remote server. The src parameter specifies the path to the file on the remote server (/data/file_mappings.txt), 
+#### and the result is stored in the file_mapping_result variable.
+#### Convert binary content to a string: After reading the file, which might contain binary data, this task decodes the binary content into a string. It uses the b64decode filter to convert 
+#### the binary content from base64 encoding to a human-readable string. The result is stored in the decoded_content variable.
+#### Save decoded content to a file: In this task, the playbook uses the copy module to save the decoded content to a file. 
+#### The content parameter is set to the decoded_content, and the dest parameter is specified as {{ item.destination }}. It uses a loop to iterate over the items in the decoded content, which is assumed to be in YAML format.
+#### Debug message before rsync: Finally, the playbook logs a debug message for each item in the decoded content. It displays the source and destination paths for each file mapping. This task also uses a loop to iterate over the items.
+#### This playbook essentially reads a file from a remote server (file_mappings.txt), decodes its content (assuming it's in YAML format), and then performs further actions based on the data in the file mappings, such as copying files with rsync.
