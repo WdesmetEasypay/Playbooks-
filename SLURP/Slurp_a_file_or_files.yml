@@ -1,1 +1,21 @@
+---
+- name: Slurp mode
+  hosts: easypay.keolis.be
+  gather_facts: true
+  tasks:
+    - name: Slurp files
+      slurp:
+        src: /home/TEST/CLOCKMGM.so        ##The file path on the target server
+      register: file_contents
+
+    - name: Debug
+      debug:
+        var: file_contents
+
+    - name: Save file to destination server
+      delegate_to: 172.17.100.39
+      copy:
+       content: "{{ file_contents['content'] | b64decode }}"
+       dest: /data/1/CLOCKMGM.so   ### The file path on the destination server
+
 
