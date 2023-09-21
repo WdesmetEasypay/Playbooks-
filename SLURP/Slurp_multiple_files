@@ -1,0 +1,27 @@
+### Example of slurping multiple files from a target to a destination server ###
+---
+- name: Slurp files from source host and save to destination host
+  hosts: your_source_host  # The source host where the files are located
+  tasks:
+    - name: List of files to slurp
+      set_fact:
+        files_to_slurp:
+          - /path/to/remote/file1
+          - /path/to/remote/file2
+          - /path/to/remote/file3
+          # Add more file paths as needed
+
+    - name: Slurp files from the source host
+      slurp:
+        src: "{{ item }}"
+      register: slurped_files
+      with_items: "{{ files_to_slurp }}"
+
+    - name: Save slurped files to the destination host
+      loop: "{{ slurped_files.results }}"
+      loop_control:
+        loop_var: file
+      copy:
+        content: "{{ file.item.content | b64decode }}"
+        dest: /path/on/destination/host/{{ file.item.src | basename }}"
+      delegate_to: your_destination_host  # The destination host where you want to save the files
