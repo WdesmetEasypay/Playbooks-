@@ -5,6 +5,10 @@
   gather_facts: true
   vars_prompt:
 
+##### Pop-up prompt ########################################################
+
+##### User en Groep ########################################################
+
     - name: useradd
       prompt: useradd
       private: no
@@ -17,13 +21,17 @@
       prompt: password
       private: no
 
+###### make_easypay-asp.sh #################################################
+
     - name: Locatie_shell
-      prompt: Wat is de locatie van het script zonder scriptnaam?
+      prompt: Wat is de locatie van het script zonder bestandsnaam?
       private: no
 
     - name: Remove_script
       prompt: Fullpath van het script die gewist moet worden
       private: no
+
+##### Install OpenSSL ######################################################
 
     - name: Specify_tar_location
       prompt: Please set the full OpenSSL tar path
@@ -45,6 +53,8 @@
       prompt: Full OpenSSL path van de tar om te wissen
       private: no
 
+#### Install Apache ########################################################
+
     - name: apache_config_path
       prompt: apache_config_path
       private: no
@@ -52,6 +62,8 @@
     - name: Set_Portnumber
       prompt: Set Portnumber
       private: no
+
+#### Install Java ###########################################################
 
     - name: Specify_tar_location_of_JDK7
       prompt: Please set the JDK7 tar path
@@ -72,6 +84,7 @@
     
 
   tasks:
+###### STARTEN VAN TASKS #########################################
 
 ##### AANMAAK USER EN GROUP ######################################
 
