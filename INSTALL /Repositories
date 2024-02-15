@@ -1,0 +1,22 @@
+---
+- name: Install basic repositories
+  hosts: ansible_client
+  gather_facts: true
+  become: true
+
+  tasks:
+
+    - name: Install GCC
+      package:
+       name: gcc
+       state: present
+
+    - name: Install install pcre-devel
+      package:
+       name: pcre-devel
+       state: present
+
+    - name: Install Zlib-devel
+      package:
+       name: zlib-devel
+       state: present
