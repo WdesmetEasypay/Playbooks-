@@ -6,13 +6,13 @@
    vars_prompt:
 
      - name: Locatie_shell
-       prompt: Wat is de locatie van het script?
+       prompt: InstallPath invullen
        private: no
 
 ###### vb: /data/test
 
      - name: Remove_script
-       prompt: Naam van het script die gewist moet worden
+       prompt: ScriptPath
        private: no
 
 ###### vb: /data/test/make_easypay-asp.sh
