@@ -1,0 +1,57 @@
+---
+- name: Make configfiles
+  hosts: ansible_client
+  gather_facts: true
+  become: true
+  vars_prompt:
+
+   - name: ENVPATH
+     prompt: Please enter the easypay-asp path
+     private: no
+
+   - name: port
+     prompt: Please enter the port you want to use
+     private: no
+
+   - name: user_group
+     prompt: Please enter user and groupname
+     private: no
+
+   - name: email
+     prompt: Please enter the supportmail
+     private: no
+
+   - name: url
+     prompt: Please enter the URL you want to use
+     private: no
+
+  tasks:
+   - name: Enter Paths
+     replace:
+       path: /home/APPBEH/Wdesmet/easypay-asp/algemeen/apache/conf/httpd.conf
+       regexp: '##ENVPATH##'
+       replace: "{{ ENVPATH }}"
+
+   - name: Enter Ports
+     replace:
+       path: /home/APPBEH/Wdesmet/easypay-asp/algemeen/apache/conf/httpd.conf
+       regexp: '##HTTPS_PORT##'
+       replace: "{{ port }}"
+
+   - name: Enter user and group
+     replace:
+       path: /home/APPBEH/Wdesmet/easypay-asp/algemeen/apache/conf/httpd.conf
+       regexp: "##USER##"
+       replace: "{{ user_group }}"
+
+   - name: Enter email
+     replace:
+       path: /home/APPBEH/Wdesmet/easypay-asp/algemeen/apache/conf/httpd.conf
+       regexp: "##EMAIL ADMIN##"
+       replace: "{{ email }}"
+
+   - name: Enter URL
+     replace:
+       path: /home/APPBEH/Wdesmet/easypay-asp/algemeen/apache/conf/httpd.conf
+       regexp: "##SERVERNAME##"
+       replace: "{{ url }}"
