@@ -1,1 +1,24 @@
+---
+- name: Master Playbook
+  hosts: ansible_client
+  become: true
+  gather_facts: false
+  tasks:
 
+
+    - name: Install Repositories
+      import_tasks: repositories_man_install.yml
+
+
+    - name: Install Basic Repositories
+      import_tasks: repositories.yml
+
+
+    - name: Check if FW is installed
+      import_tasks: check_firewall_install.yml
+
+    - name: Set Firewall Port
+      import_tasks: add_firewall_port.yml
+
+    - name: Folderstructuur
+      import_tasks: folderstructuur.yml
