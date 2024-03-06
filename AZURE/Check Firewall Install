@@ -1,0 +1,21 @@
+---
+- name: Check if firewalld is installed
+  command: which firewalld
+  register: firewalld_check
+  ignore_errors: true
+
+- name: Install firewalld if not installed
+  yum:
+    name: firewalld
+    state: present
+  when: firewalld_check.rc != 0
+
+- name: Start FW after install
+  service:
+    name: firewalld
+    state: started
+  when: firewalld_check.rc != 0 and ansible_service_mgr == "systemd" and ansible_systemd_services['firewalld']['status'] != 'running'
+
+- name: Display firewall status
+  debug:
+    msg: "Firewall is installed: {{ 'Yes' if firewalld_check.rc == 0 else 'No' }}"
