@@ -1,0 +1,59 @@
+    - name: Yayl-Devel downloading from latest ISO
+      find:
+        paths: "/mnt/mount_point/installatie/linux/modsecurity/"
+        file_type: file
+      register: source_files
+
+    - name: Filter specific yajl-devel file from the directory
+      set_fact:
+        specific_file: "{{ source_files.files | selectattr('path', 'search', 'yajl-devel-2.1.0-22.el9.x86_64.rpm') | first }}"
+
+
+    - name: Copy file(s) from ISO to local path
+      copy:
+        src: "{{ specific_file.path }}"
+        dest: "/home/APPBEH/Wdesmet//{{ specific_file.path | basename }}"
+        remote_src: yes
+
+    - name: Install Yajl-Devel
+      command: rpm -i "{{ specific_file.path }}"
+      args:
+        chdir: "/home/APPBEH/Wdesmet"
+      when: rpm_check.rc !=0
+
+    - name: Remove Installation file
+      file:
+       path: /home/APPBEH/Wdesmet/yajl-devel-2.1.0-22.el9.x86_64.rpm
+       state: absent
+
+    - name: Check if Jansson-Devel is installed
+      shell: rpm -q jansson-devel
+      register: rpm_check
+      ignore_errors: true
+
+    - name: Jansson-Devel downloading from latest ISO
+      find:
+        paths: "/mnt/mount_point/installatie/linux/sso"
+        file_type: file
+      register: source_files
+
+    - name: Filter specific Janssen-Devel file from the directory
+      set_fact:
+        specific_file: "{{ source_files.files | selectattr('path', 'search', 'jansson-devel-2.14-1.el9.x86_64.rpm') | first }}"
+
+    - name: Copy file(s) from ISO to local path
+      copy:
+        src: "{{ specific_file.path }}"
+        dest: "/home/APPBEH/Wdesmet//{{ specific_file.path | basename }}"
+        remote_src: yes
+
+    - name: Install Janssen-Devel
+      command: rpm -i "{{ specific_file.path }}"
+      args:
+        chdir: "/home/APPBEH/Wdesmet"
+      when: rpm_check.rc !=0
+
+    - name: Remove Installation file
+      file:
+       path: /home/APPBEH/Wdesmet/jansson-devel-2.14-1.el9.x86_64.rpm
+       state: absent
