@@ -1,0 +1,21 @@
+---
+- name: Set Firewall Port
+  firewalld:
+    zone: public
+    port: 443/tcp
+    state: enabled
+    permanent: yes
+    immediate: yes
+
+- name: Reload Firewall
+  service:
+    name: firewalld
+    state: reloaded
+
+- name: Get current firewall open ports
+  shell: firewall-cmd --zone=public --list-all
+  register: firewall_config
+
+- name: Display current firewall open ports
+  debug:
+    msg: "{{ firewall_config.stdout }}"
