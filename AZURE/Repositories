@@ -1,0 +1,47 @@
+---
+    - name: Install GCC
+      package:
+       name: gcc
+       state: present
+
+    - name: Install pcre-devel
+      package:
+       name: pcre-devel
+       state: present
+
+    - name: Install Zlib-devel
+      package:
+       name: zlib-devel
+       state: present
+
+    - name: Install libxml2-devel
+      package:
+       name: libxml2-devel
+       state: present
+
+    - name: Install expat-devel
+      package:
+       name: expat-devel
+       state: present
+
+    - name: Install libnsl
+      package:
+       name: libnsl
+       state: present
+
+    - name: Install Yajl
+      package:
+       name: yajl
+       state: present
+
+    - name: Check installed versions of yajl and yajl-devel
+      shell: dnf list installed yajl yajl-devel > /home/APPBEH/Wdesmet/yajl.log
+
+
+    - name: Install Jansson
+      package:
+       name: jansson
+       state: present
+
+    - name: Check installed versions of Jansson and Jansson-Devel
+      shell: dnf list installed jansson jansson-devel > /home/APPBEH/Wdesmet/jansson.log
