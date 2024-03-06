@@ -1,0 +1,32 @@
+---
+    - name: Create directory
+      file:
+        path: /datas/
+        state: directory
+        mode: '777'
+
+    - name: Specify location script
+      find:
+        paths: "/mnt/mount_point/installatie/linux/"
+        file_type: file
+      register: source_files
+
+    - name: Filter specific script file from the directory
+      set_fact:
+        specific_file: "{{ source_files.files | selectattr('path', 'search', 'make_easypay-asp.sh') | first }}"
+
+    - name: Copy file(s) from ISO to local path
+      copy:
+         src: "{{ specific_file.path }}"
+         dest: "/datas/{{ specific_file.path | basename }}"
+         remote_src: yes
+
+    - name: Run script
+      command: sh make_easypay-asp.sh "{{ specific_file.path }}"
+      args:
+        chdir: "/datas"
+
+    - name: Remove script after install
+      file:
+        path: /datas/make_easypay-asp.sh
+        state: absent
